@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ViewComposeBenchmark</string>
+    <string name="tab_text_1">View Fragment</string>
+    <string name="tab_text_2">Compose Fragment</string>
+</resources>
