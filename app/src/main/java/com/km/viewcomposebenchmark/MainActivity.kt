@@ -1,34 +1,46 @@
 package com.km.viewcomposebenchmark
 
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import com.km.viewcomposebenchmark.ui.view.SectionsPagerAdapter
-import com.km.viewcomposebenchmark.databinding.ActivityMainBinding
+import androidx.compose.ui.platform.LocalView
+import com.km.viewcomposebenchmark.ui.compose.fragment.ComposeFragment
+import com.km.viewcomposebenchmark.ui.compose.fragment.ListItems
+import com.km.viewcomposebenchmark.ui.view.ViewFragment
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private var onCreateTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        onCreateTime = System.currentTimeMillis()
+        Log.i("dbgkm", "composeActivity onCreate $onCreateTime")
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
-        val viewPager: ViewPager = binding.viewPager
-        viewPager.adapter = sectionsPagerAdapter
-        val tabs: TabLayout = binding.tabs
-        tabs.setupWithViewPager(viewPager)
-        val fab: FloatingActionButton = binding.fab
+        // Compose Only
+        setContent {
+            ListItems()
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            val view = LocalView.current
+            view.viewTreeObserver.addOnDrawListener {
+                val onDrawTime = System.currentTimeMillis()
+                Log.i("dbgkm", "composeActivity onDraw ${onDrawTime - onCreateTime}")
+            }
         }
+
+        // Compose or View within XML
+//        setContentView(R.layout.activity_container_xml)
+//        supportFragmentManager.beginTransaction()
+//            .replace(R.id.fragment_container, ComposeFragment::class.java, null)
+//            .commit()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val onResumeTime = System.currentTimeMillis()
+        Log.i("dbgkm", "composeActivity onResume ${onResumeTime - onCreateTime}")
     }
 }
