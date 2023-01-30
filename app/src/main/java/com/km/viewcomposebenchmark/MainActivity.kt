@@ -21,21 +21,21 @@ class MainActivity : AppCompatActivity() {
         Log.i("dbgkm", "composeActivity onCreate $onCreateTime")
 
         // Compose Only
-        setContent {
-            ListItems()
-
-            val view = LocalView.current
-            view.viewTreeObserver.addOnDrawListener {
-                val onDrawTime = System.currentTimeMillis()
-                Log.i("dbgkm", "composeActivity onDraw ${onDrawTime - onCreateTime}")
-            }
-        }
+//        setContent {
+//            ListItems()
+//
+//            val view = LocalView.current
+//            view.viewTreeObserver.addOnDrawListener {
+//                val onDrawTime = System.currentTimeMillis()
+//                Log.i("dbgkm", "composeActivity onDraw ${onDrawTime - onCreateTime}")
+//            }
+//        }
 
         // Compose or View within XML
-//        setContentView(R.layout.activity_container_xml)
-//        supportFragmentManager.beginTransaction()
-//            .replace(R.id.fragment_container, ComposeFragment::class.java, null)
-//            .commit()
+        setContentView(R.layout.activity_container_xml)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, ComposeFragment::class.java, null)
+            .commit()
     }
 
     override fun onResume() {
